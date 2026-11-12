@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorex Acadêmico de Medicina | Cirurgia I</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0F2A4A;
+            --secondary-color: #1E40AF;
+            --accent-color: #0284C7;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --success-color: #16A34A;
+            --warning-color: #D97706;
+            --danger-color: #DC2626;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #1E293B;
+            --secondary-color: #334155;
+            --accent-color: #38BDF8;
+            --bg-color: #0F172A;
+            --card-bg: #1E293B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border-color: #334155;
+            --success-color: #22C55E;
+            --warning-color: #FBBF24;
+            --danger-color: #F87171;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 280px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .nav-links {
+            padding: 16px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-links li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .nav-links li a:hover, .nav-links li a.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        header.top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            background: var(--card-bg);
+            padding: 20px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .search-box input {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-main);
+            width: 300px;
+            font-size: 0.9rem;
+        }
+
+        button.btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        button.btn:hover {
+            opacity: 0.9;
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            margin: 24px 0 12px 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h4 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 250px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .callout {
+            border-left: 4px solid var(--accent-color);
+            background: rgba(2, 132, 199, 0.05);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .callout.warning {
+            border-left-color: var(--danger-color);
+            background: rgba(220, 38, 38, 0.05);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            aside { width: 70px; }
+            aside .sidebar-header h1, aside .sidebar-header p, aside span { display: none; }
+            main { margin-left: 70px; padding: 20px; }
+            .search-box input { width: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="sidebar-header">
+            <h1>Memorex Cirúrgico</h1>
+            <p>Medicina | 5º Semestre</p>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="switchTab('onco', event)" class="active">🧬 Cirurgia Oncológica</a></li>
+            <li><a href="#" onclick="switchTab('estomago', event)">🏥 Afecções do Estômago</a></li>
+            <li><a href="#" onclick="switchTab('abdome', event)">🚨 Abdome Agudo</a></li>
+            <li><a href="#" onclick="switchTab('hernias', event)">🩹 Hérnias Abdominais</a></li>
+            <li><a href="#" onclick="switchTab('flashcards', event)">💡 Flashcards & Quiz</a></li>
+        </ul>
+    </aside>
+
+    <main>
+        <header class="top-bar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Pesquisar termos, ex: TNM, R0, Hérnia..." onkeyup="filterContent()">
+            </div>
+            <div class="controls">
+                <button class="btn" onclick="toggleTheme()">🌓 Alternar Tema</button>
+            </div>
+        </header>
+
+        <!-- SEÇÃO 1: CIRURGIA ONCOLÓGICA -->
+        <section id="onco" class="active">
+            <h2>Fundamentos de Cirurgia Oncológica & Biologia Tumoral</h2>
+            
+            <div class="callout">
+                <strong>Pilares da Decisão Cirúrgica Oncológica:</strong> Nenhuma cirurgia oncológica é indicada de imediato sem avaliar: 
+                <strong>1. Estadiamento</strong> (extensão da doença), <strong>2. Operabilidade</strong> (condições clínicas/ECOG) e <strong>3. Necessidade de Terapias Neoadjuvantes/Adjuvantes</strong>.
+            </div>
+
+            <div class="grid-2">
+                <div class="card searchable-item">
+                    <h4>🧬 Embriologia e Nomenclatura</h4>
+                    <ul>
+                        <li><strong>Ectoderma:</strong> Epiderme, SNC e SNP (Carcinomas espinocelulares/escamosos).</li>
+                        <li><strong>Mesoderma:</strong> Tecidos mesenquimais, músculos, ossos, vasos (Sarcomas, ex: Osteossarcoma).</li>
+                        <li><strong>Endoderma:</strong> Revestimento do tubo digestivo, pulmões, fígado e pâncreas (Adenocarcinomas).</li>
+                    </ul>
+                </div>
+
+                <div class="card searchable-item">
+                    <h4>🔄 Progressão Tumoral & Invasão</h4>
+                    <ul>
+                        <li>Metaplasia ➔ Displasia ➔ <strong>Carcinoma <em>in situ</em></strong> (Membrana basal íntegra, risco nulo de metástase) ➔ <strong>Carcinoma Invasivo</strong>.</li>
+                        <li><strong>Angiogênese:</strong> Hipóxia central induz liberação de VEGF. Tumores malignos geram necrose por crescimento superior à vascularização.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Sistema TNM e Ressecção Cirúrgica</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Componente / Conceito</th>
+                        <th>Descrição Clínica / Patológica</th>
+                        <th>Significado Prático</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>TNM</strong></td>
+                        <td>T (Tumor primário), N (Linfonodos regionais), M (Metástase a distância). Divide-se em cTNM (clínico pré-op) e pTNM (patológico pós-op).</td>
+                        <td>Guia estadiamento, prognóstico e indicação de quimioterapia adjuvante.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Margens R0 / R1 / R2</strong></td>
+                        <td><strong>R0:</strong> Livre microscópica/macroscópica; <strong>R1:</strong> Microscópico positivo; <strong>R2:</strong> Macroscópico residual.</td>
+                        <td>R0 é o padrão de excelência curativa. R1 e R2 exigem tratamento complementar sistêmico/radioterapia.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Escala ECOG (0 a 4)</strong></td>
+                        <td>Avalia performance status. ECOG 0 (plenamente ativo) até ECOG 4 (totalmente restrito ao leito).</td>
+                        <td>Idade isolada não contraindica cirurgia; ECOG elevado (3-4) contraindica cirurgia agressiva.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SEÇÃO 2: AFECÇÕES DO ESTÔMAGO -->
+        <section id="estomago">
+            <h2>Afecções Cirúrgicas do Estômago & DUP</h2>
+
+            <div class="callout warning">
+                <strong>Sinais de Alarme na Dispepsia (EDA Obrigatória):</strong> Idade ≥ 60 anos, perda ponderal involuntária, anemia ferropriva, disfagia, vômitos persistentes e massa abdominal palpável.
+            </div>
+
+            <div class="grid-2">
+                <div class="card searchable-item">
+                    <h4>🧪 Fisiologia da Secreção Ácida</h4>
+                    <ul>
+                        <li><strong>Estímulos à Célula Parietal:</strong> Gastrina (Cél. G), Histamina (Cél. ECL) e Acetilcolina (N. Vago).</li>
+                        <li><strong>Bomba Final:</strong> H+/K+-ATPase inibida irreversivelmente pelos IBPs (Omeprazol).</li>
+                        <li><strong>Maré Alcalina:</strong> Liberação basal de HCO3- pós-prandial.</li>
+                    </ul>
+                </div>
+
+                <div class="card searchable-item">
+                    <h4>🔪 Úlcera Gástrica (Johnson) vs Duodenal</h4>
+                    <ul>
+                        <li><strong>Johnson I e IV:</strong> Hiposecreção ácida (Pequena curvatura / Cárdia). Cirurgia sem vagotomia.</li>
+                        <li><strong>Johnson II e III:</strong> Hipersecreção ácida (Gástrica + Duodenal / Pré-pilórica). Exigem Vagotomia + Antrectomia.</li>
+                        <li><strong>Úlcera Gástrica:</strong> Exige biópsia obrigatória e EDA de controle (8-12 semanas).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Complicações da DUP & Condutas</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Complicação</th>
+                        <th>Apresentação Clínica Clássica</th>
+                        <th>Manejo e Conduta Cirúrgica</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Hemorragia Digestiva Alta (HDA)</strong></td>
+                        <td>Hematêmese, melena ou hematoquezia com instabilidade hemodinâmica.</td>
+                        <td>Ressuscitação volêmica rigorosa antes da EDA. Forrest Ia, Ib e IIa exigem hemostasia endoscópica.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Perfuração (UPP)</strong></td>
+                        <td>Dor súbita em "punhalada", abdome rígido em "tábua", pneumoperitônio (Sinal de Jobert).</td>
+                        <td>Sutura + Patch Omental (Técnica de Graham) + lavagem exaustiva da cavidade.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Estenose Pilórica</strong></td>
+                        <td>Vômitos tardios sem bile, alcalose metabólica hipocalêmica, hipoclorêmica com acidúria paradoxal.</td>
+                        <td>Descompressão com SNG, correção eletrolítica e posterior cirurgia eletiva.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SEÇÃO 3: ABDOME AGUDO -->
+        <section id="abdome">
+            <h2>Abdome Agudo: Abordagem e Classificação Sindrômica</h2>
+
+            <div class="callout">
+                <strong>Regra de Ouro da Admissão:</strong> Em pacientes com abdome agudo e instabilidade hemodinâmica, a <em>ressuscitação volêmica e estabilização</em> precedem a investigação diagnóstica detalhada.
+            </div>
+
+            <div class="grid-2">
+                <div class="card searchable-item">
+                    <h4>🔥 Abdome Agudo Inflamatório</h4>
+                    <ul>
+                        <li><strong>Apendicite:</strong> Dor periumbilical migra para Fossa Ilíaca Direita (FID). Blumberg positivo.</li>
+                        <li><strong>Colecistite:</strong> Dor em Hipocôndrio Direito, Sinal de Murphy positivo. USG abdominal é o exame de escolha.</li>
+                    </ul>
+                </div>
+
+                <div class="card searchable-item">
+                    <h4>⚡ Abdome Agudo Vascular (Isquêmico)</h4>
+                    <ul>
+                        <li><strong>Marca Registrada:</strong> Dor intensa e <em>desproporcional ao exame físico</em> (abdome inicialmente flácido e inocente).</li>
+                        <li><strong>Etiologia:</strong> Embolia da artéria mesentérica superior (associada à Fibrilação Atrial). Exame padrão-ouro: Angio-TC.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>As 5 Síndromes do Abdome Agudo</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Síndrome</th>
+                        <th>Etiologias Principais</th>
+                        <th>Sinais Diagnósticos / Achados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Inflamatório</strong></td>
+                        <td>Apendicite, Colecistite, Diverticulite, Pancreatite</td>
+                        <td>Febre, leucocitose, defesa muscular localizada, irritação peritoneal.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Obstrutivo</strong></td>
+                        <td>Bridas/aderências (delgado), Neoplasias (cólon), Hérnias</td>
+                        <td>Cólica, distensão, vômitos (biliosos ou fecaloides), parada de gases/fezes.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Perfurativo</strong></td>
+                        <td>Úlcera péptica perfurada, perfuração diverticular</td>
+                        <td>Dor súbita excruciante, abdome em tábua, pneumoperitônio (ar subdiafragmático).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hemorragico</strong></td>
+                        <td>Gravidez ectópica rota, Ruptura de AAA, Ruptura esplênica</td>
+                        <td>Choque hipovolêmico, palidez. <em>Regra de ouro:</em> Beta-hCG obrigatório em mulheres.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vascular</strong></td>
+                        <td>Embolia/Trombose Mesentérica, Isquemia Não Oclusiva</td>
+                        <td>Dor desproporcional ao exame físico, acidose com lactato elevado.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SEÇÃO 4: HÉRNIAS -->
+        <section id="hernias">
+            <h2>Hérnias da Parede Abdominal & Complicações</h2>
+
+            <div class="callout warning">
+                <strong>Conduta em Mulheres:</strong> Toda mulher com hérnia inguinal/femoral diagnosticada tem <em>indicação cirúrgica obrigatória</em>, mesmo assintomática, devido ao alto risco de hérnia femoral e estrangulamento.
+            </div>
+
+            <div class="grid-2">
+                <div class="card searchable-item">
+                    <h4>🔍 Inguinal Direta vs Indireta vs Femoral</h4>
+                    <ul>
+                        <li><strong>Direta:</strong> Adquirida. Fraqueza no Triângulo de Hesselbach (medial aos vasos epigástricos).</li>
+                        <li><strong>Indireta:</strong> Congênita. Persistência do conduto peritônio-vaginal (lateral aos vasos epigástricos).</li>
+                        <li><strong>Femoral:</strong> Abaixo do ligamento inguinal, medial à veia femoral. Maior taxa de estrangulamento.</li>
+                    </ul>
+                </div>
+
+                <div class="card searchable-item">
+                    <h4>⚠️ Encarceramento vs Estrangulamento</h4>
+                    <ul>
+                        <li><strong>Encarceramento:</strong> Conteúdo preso, irredutível, mas <em>sem</em> sofrimento vascular.</li>
+                        <li><strong>Estrangulamento:</strong> Isquemia arterial, necrose, hiperemia cutânea local, dor intensa e febre. <em>Proibido</em> tentar redução manual (taxis).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Técnicas Cirúrgicas e Marcos Anatômicos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Abordagem / Técnica</th>
+                        <th>Indicação Principal</th>
+                        <th>Detalhes Anatômicos Críticos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lichtenstein</strong></td>
+                        <td>Padrão-ouro aberto para hérnias inguinais primárias.</td>
+                        <td>Técnica livre de tensão com fixação de tela de polipropileno no ligamento inguinal e tendão conjunto.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Laparoscopia (TAPP / TEP)</strong></td>
+                        <td>Hérnias bilaterais e recidivadas após Lichtenstein.</td>
+                        <td>Visão posterior. Evitar grampos no <em>Trígono da Morte</em> e <em>Trígono da Dor</em>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hérnia Estrangulada com Necrose</strong></td>
+                        <td>Emergência cirúrgica com sofrimento de alça.</td>
+                        <td>Enterectomia da alça necrótica + Anastomose + Herniorrafia tecidual sem tela (McVay) se houver contaminação.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SEÇÃO 5: FLASHCARDS E QUIZ -->
+        <section id="flashcards">
+            <h2>Flashcards de Revisão Ativa (Medicina - Cirurgia I)</h2>
+            <p style="margin-bottom: 20px; color: var(--text-muted);">Clique no cartão para revelar a resposta correta e testar seus conhecimentos clínicos.</p>
+
+            <div class="flashcard-container" onclick="flipCard()">
+                <div class="flashcard" id="activeCard">
+                    <div class="flashcard-front">
+                        <h4 id="cardQuestion">Qual é a conduta imediata mandatória em toda mulher em idade fértil que se apresenta no pronto-socorro com quadro de dor abdominal aguda?</h4>
+                        <span style="font-size: 0.8rem; color: var(--accent-color); margin-top: 15px;">(Clique para ver a resposta)</span>
+                    </div>
+                    <div class="flashcard-back">
+                        <h4 id="cardAnswer">Dosagem de Beta-hCG sérico ou urinário e realização de ultrassonografia pélvica/transvaginal, visando afastar gravidez ectópica rota (abdome agudo hemorrágico).</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-controls">
+                <button class="btn" onclick="prevCard()">⬅️ Anterior</button>
+                <button class="btn" onclick="nextCard()">Próximo ➡️</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function switchTab(tabId, event) {
+            event.preventDefault();
+            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+            }
+        }
+
+        function filterContent() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let items = document.querySelectorAll('.searchable-item');
+            
+            items.forEach(item => {
+                let text = item.textContent.toLowerCase();
+                if (text.includes(input)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        const flashcardsData = [
+            {
+                q: "Qual é a conduta imediata mandatória em toda mulher em idade fértil que se apresenta no pronto-socorro com quadro de dor abdominal aguda?",
+                a: "Dosagem de Beta-hCG sérico ou urinário e ultrassonografia pélvica/transvaginal para afastar gravidez ectópica rota."
+            },
+            {
+                q: "Quais são os três pilares fundamentais que devem ser avaliados antes de indicar qualquer intervenção em cirurgia oncológica?",
+                a: "1. Estadiamento (extensão da doença), 2. Operabilidade (condições clínicas/ECOG) e 3. Necessidade de terapias neoadjuvantes ou adjuvantes."
+            },
+            {
+                q: "Qual é a marca registrada semiológica do Abdome Agudo Vascular (Isquêmico) na admissão hospitalar?",
+                a: "Dor abdominal intensa e desproporcional aos achados do exame físico (abdome inicialmente flácido, inocente e sem sinais de peritonite)."
+            },
+            {
+                q: "Qual é a diferença anatômica fundamental entre a hérnia inguinal direta e a indireta em relação aos vasos epigástricos inferiores?",
+                a: "A Hérnia Direta localiza-se MEDIAL aos vasos epigástricos (Triângulo de Hesselbach); a Hérnia Indireta localiza-se LATERAL aos vasos epigástricos (anel inguinal interno)."
+            },
+            {
+                q: "Por que a úlcera gástrica exige biópsias obrigatórias e EDA de controle de cura em 8 a 12 semanas, ao contrário da úlcera duodenal?",
+                a: "Porque a úlcera gástrica pode ser um adenocarcinoma gástrico ulcerado mascarado, enquanto a úlcera duodenal raramente é maligna."
+            },
+            {
+                q: "Quais são as duas zonas de perigo que o cirurgião deve evitar grampear durante o reparo laparoscópico de hérnia (TAPP/TEP)?",
+                a: "1. Trígono da Morte (risco de lesão de artéria e veia ilíaca externa) e 2. Trígono da Dor (risco de aprisionamento de nervos e inguinodinia crônica)."
+            }
+        ];
+
+        let currentCardIndex = 0;
+
+        function flipCard() {
+            document.getElementById('activeCard').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            const card = document.getElementById('activeCard');
+            card.classList.remove('flipped');
+            setTimeout(() => {
+                currentCardIndex = (currentCardIndex + 1) % flashcardsData.length;
+                document.getElementById('cardQuestion').innerText = flashcardsData[currentCardIndex].q;
+                document.getElementById('cardAnswer').innerText = flashcardsData[currentCardIndex].a;
+            }, 200);
+        }
+
+        function prevCard() {
+            const card = document.getElementById('activeCard');
+            card.classList.remove('flipped');
+            setTimeout(() => {
+                currentCardIndex = (currentCardIndex - 1 + flashcardsData.length) % flashcardsData.length;
+                document.getElementById('cardQuestion').innerText = flashcardsData[currentCardIndex].q;
+                document.getElementById('cardAnswer').innerText = flashcardsData[currentCardIndex].a;
+            }, 200);
+        }
+    </script>
+</body>
+</html>
